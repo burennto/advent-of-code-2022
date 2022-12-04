@@ -117,16 +117,10 @@ class Round
   end
 end
 
-answer_1 = 0
-answer_2 = 0
+puts File.foreach('input.txt').with_object([]).each { |line, scores|
+  scores << Round.parse(line: line.chomp, mode: :as_me).score
+}.sum
 
-File.foreach('input.txt') do |line|
-  answer_1 += Round.parse(line: line.chomp, mode: :as_me).score
-end
-
-File.foreach('input.txt') do |line|
-  answer_2 += Round.parse(line: line.chomp, mode: :as_outcome).score
-end
-
-puts answer_1
-puts answer_2
+puts File.foreach('input.txt').with_object([]).each { |line, scores|
+  scores << Round.parse(line: line.chomp, mode: :as_outcome).score
+}.sum
