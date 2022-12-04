@@ -27,21 +27,13 @@ class BadgeFinder
   end
 end
 
-answer_1 = 0
-answer_2 = 0
-
-File.foreach('input.txt') do |line|
+puts File.foreach('input.txt').with_object([]).each { |line, priorities|
   rucksack = Rucksack.new(line.chomp)
-  priority = Priority.for(rucksack.duplicate)
-  answer_1 += priority
-end
+  priorities << Priority.for(rucksack.duplicate)
+}.sum
 
-File.foreach('input.txt').each_slice(3) do |lines|
+puts File.foreach('input.txt').each_slice(3).with_object([]) { |lines, priorities|
   elves = lines.map(&:chomp)
   common_item = BadgeFinder.find_common_item(elves)
-  priority = Priority.for(common_item)
-  answer_2 += priority
-end
-
-puts answer_1
-puts answer_2
+  priorities <<  Priority.for(common_item)
+}.sum
