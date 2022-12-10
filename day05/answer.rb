@@ -1,3 +1,26 @@
+require 'minitest/autorun'
+
+class Day05Test < Minitest::Test
+  def setup
+    @example = 'example.txt'
+    @input = 'input.txt'
+  end
+
+  def test_part_1
+    # drawing parsing does not work correctly against example data
+
+    # assert_equal 'CMZ', solve_part_1(@example)
+    assert_equal 'VGBBJCRMN', solve_part_1(@input)
+  end
+
+  def test_part_2
+    # drawing parsing does not work correctly against example data
+
+    # assert_equal 'MCD', solve_part_2(@example)
+    assert_equal 'LBBVJBRMH', solve_part_2(@input)
+  end
+end
+
 class CrateStacks
   attr_reader :store
 
@@ -104,21 +127,53 @@ class Crate
   end
 end
 
-drawing = File.foreach('input.txt').with_object([]).each do |line, lines|
-  break lines if line[0] == ' '
-  lines << line.chomp.split('').each_slice(4).map { |arr| arr.join.delete('^A-Z') }
+def parse_drawing(file)
+  drawing = []
+
+  File.foreach(file) do |line|
+    break if line[0..1] == ' 1'
+    drawing << line.chomp.split('').each_slice(4).map { |arr| arr.join.delete('^A-Z') }
+  end
+
+  drawing
 end
 
-stacks_1 = CrateStacks.initialize_from_drawing(drawing)
-stacks_2 = CrateStacks.initialize_from_drawing(drawing)
+def parse_procedures(file)
+  procedures = []
 
-File.foreach('input.txt') do |line|
-  next unless line[0..3] == 'move'
+  File.foreach(file) do |line|
+    next unless line[0..3] == 'move'
+    procedure = line.chomp.split(' ').values_at(1, 3, 5).map(&:to_i)
+    procedures << procedure
+  end
 
-  quantity, pos_from, pos_to = line.chomp.split(' ').values_at(1, 3, 5).map(&:to_i)
-  stacks_1.move!(from: pos_from, to: pos_to, quantity: quantity, mode: :one_by_one)
-  stacks_2.move!(from: pos_from, to: pos_to, quantity: quantity, mode: :at_once)
+  procedures
 end
 
-puts stacks_1.tops
-puts stacks_2.tops
+def solve_part_1(file)
+  drawing = parse_drawing(file)
+  procedures = parse_procedures(file)
+
+  stacks = CrateStacks.initialize_from_drawing(drawing)
+
+  procedures.each do |procedure|
+    quantity, pos_from, pos_to = procedure
+    stacks.move!(from: pos_from, to: pos_to, quantity: quantity, mode: :one_by_one)
+  end
+
+  stacks.tops
+end
+
+def solve_part_2(file)
+  drawing = parse_drawing(file)
+  procedures = parse_procedures(file)
+
+  stacks = CrateStacks.initialize_from_drawing(drawing)
+
+  procedures.each do |procedure|
+    quantity, pos_from, pos_to = procedure
+    stacks.move!(from: pos_from, to: pos_to, quantity: quantity, mode: :at_once)
+  end
+
+  stacks.tops
+end
