@@ -1,15 +1,21 @@
 require 'minitest/autorun'
 
-class Day9Test < Minitest::Test
-  def test_example
-    assert_equal 13, solve_part_1('example1.txt')
-    assert_equal 1, solve_part_2('example1.txt')
-    assert_equal 36, solve_part_2('example2.txt')
+class Day09Test < Minitest::Test
+  def setup
+    @example_1 = 'example1.txt'
+    @example_2 = 'example2.txt'
+    @input = 'input.txt'
   end
 
-  def test_answers
-    assert_equal 6503, solve_part_1('input.txt')
-    assert_equal 2724, solve_part_2('input.txt')
+  def test_part_1
+    assert_equal 13, solve_part_1(@example_1)
+    assert_equal 6503, solve_part_1(@input)
+  end
+
+  def test_part_2
+    assert_equal 1, solve_part_2(@example_1)
+    assert_equal 36, solve_part_2(@example_2)
+    assert_equal 2724, solve_part_2(@input)
   end
 end
 
