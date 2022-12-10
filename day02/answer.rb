@@ -136,18 +136,18 @@ class Round
   end
 end
 
-def parse_lines(file)
+def read_lines(file)
   File.readlines(file).map(&:chomp)
 end
 
 def solve_part_1(file)
-  parse_lines(file).reduce(0) do |final_score, line|
+  read_lines(file).reduce(0) do |final_score, line|
     final_score += Round.parse(line: line, mode: :as_me).score
   end
 end
 
 def solve_part_2(file)
-  parse_lines(file).reduce(0) do |final_score, line|
+  read_lines(file).reduce(0) do |final_score, line|
     final_score += Round.parse(line: line, mode: :as_outcome).score
   end
 end
