@@ -1,3 +1,22 @@
+require 'minitest/autorun'
+
+class Day03Test < Minitest::Test
+  def setup
+    @example = 'example.txt'
+    @input = 'input.txt'
+  end
+
+  def test_part_1
+    assert_equal 157, solve_part_1(@example)
+    assert_equal 8085, solve_part_1(@input)
+  end
+
+  def test_part_2
+    assert_equal 70, solve_part_2(@example)
+    assert_equal 2515, solve_part_2(@input)
+  end
+end
+
 require 'set'
 
 class Rucksack
@@ -27,13 +46,20 @@ class BadgeFinder
   end
 end
 
-puts File.foreach('input.txt').with_object([]).each { |line, priorities|
-  rucksack = Rucksack.new(line.chomp)
-  priorities << Priority.for(rucksack.duplicate)
-}.sum
+def read_lines(file)
+  File.readlines(file).map(&:chomp)
+end
 
-puts File.foreach('input.txt').each_slice(3).with_object([]) { |lines, priorities|
-  elves = lines.map(&:chomp)
-  common_item = BadgeFinder.find_common_item(elves)
-  priorities <<  Priority.for(common_item)
-}.sum
+def solve_part_1(file)
+  read_lines(file).reduce(0) do |sum, line|
+    rucksack = Rucksack.new(line)
+    sum += Priority.for(rucksack.duplicate)
+  end
+end
+
+def solve_part_2(file)
+  read_lines(file).each_slice(3).reduce(0) do |sum, elves|
+    common_item = BadgeFinder.find_common_item(elves)
+    sum += Priority.for(common_item)
+  end
+end
