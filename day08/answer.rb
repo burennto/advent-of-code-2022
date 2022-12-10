@@ -1,14 +1,19 @@
 require 'minitest/autorun'
 
-class Day8Test < Minitest::Test
-  def test_example
-    assert_equal 21, solve_part_1('example.txt')
-    assert_equal 8, solve_part_2('example.txt')
+class Day08Test < Minitest::Test
+  def setup
+    @example = 'example.txt'
+    @input = 'input.txt'
   end
 
-  def test_answers
-    assert_equal 1713, solve_part_1('input.txt')
-    assert_equal 268464, solve_part_2('input.txt')
+  def test_part_1
+    assert_equal 21, solve_part_1(@example)
+    assert_equal 1713, solve_part_1(@input)
+  end
+
+  def test_part_2
+    assert_equal 8, solve_part_2(@example)
+    assert_equal 268464, solve_part_2(@input)
   end
 end
 
