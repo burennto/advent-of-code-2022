@@ -1,3 +1,22 @@
+require 'minitest/autorun'
+
+class Day02Test < Minitest::Test
+  def setup
+    @example = 'example.txt'
+    @input = 'input.txt'
+  end
+
+  def test_part_1
+    assert_equal 15, solve_part_1(@example)
+    assert_equal 12855, solve_part_1(@input)
+  end
+
+  def test_part_2
+    assert_equal 12, solve_part_2(@example)
+    assert_equal 13726, solve_part_2(@input)
+  end
+end
+
 class HandShape
   attr_reader :shape
 
@@ -117,10 +136,18 @@ class Round
   end
 end
 
-puts File.foreach('input.txt').with_object([]).each { |line, scores|
-  scores << Round.parse(line: line.chomp, mode: :as_me).score
-}.sum
+def parse_lines(file)
+  File.readlines(file).map(&:chomp)
+end
 
-puts File.foreach('input.txt').with_object([]).each { |line, scores|
-  scores << Round.parse(line: line.chomp, mode: :as_outcome).score
-}.sum
+def solve_part_1(file)
+  parse_lines(file).reduce(0) do |final_score, line|
+    final_score += Round.parse(line: line, mode: :as_me).score
+  end
+end
+
+def solve_part_2(file)
+  parse_lines(file).reduce(0) do |final_score, line|
+    final_score += Round.parse(line: line, mode: :as_outcome).score
+  end
+end
