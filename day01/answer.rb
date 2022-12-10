@@ -28,11 +28,9 @@ def parse_elves(file)
 end
 
 def solve_part_1(file)
-  elves = parse_elves(file)
-  elves.max
+  parse_elves(file).max
 end
 
 def solve_part_2(file)
-  elves = parse_elves(file)
-  elves.max(3).sum
+  parse_elves(file).max(3).sum
 end
